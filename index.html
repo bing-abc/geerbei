@@ -226,6 +226,13 @@
       box-shadow: var(--shadow);
     }
 
+    .cta.link {
+      background: transparent;
+      border: 1px dashed rgba(154, 215, 255, 0.5);
+      color: var(--accent-2);
+      box-shadow: none;
+    }
+
     .cta.secondary {
       background: rgba(154, 215, 255, 0.12);
       color: var(--text);
@@ -243,6 +250,58 @@
       grid-template-columns: 1fr auto;
       gap: 12px;
       align-items: center;
+    }
+
+    .mode-toggle {
+      display: inline-flex;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 6px;
+      border-radius: 12px;
+      border: 1px solid rgba(154, 215, 255, 0.25);
+    }
+
+    .mode-button {
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mode-button.active {
+      background: linear-gradient(135deg, rgba(91, 231, 196, 0.15), rgba(154, 215, 255, 0.18));
+      color: var(--text);
+      border: 1px solid rgba(91, 231, 196, 0.4);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .canvas {
+      background: radial-gradient(circle at 30% 30%, rgba(91, 231, 196, 0.08), transparent 45%),
+        var(--card);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .canvas svg text {
+      fill: var(--muted);
+      font-size: 12px;
+    }
+
+    .storyboard {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .story-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
     }
 
     input[type="range"] {
@@ -397,6 +456,79 @@
   </section>
 
   <section>
+    <h2>光路剖面 & 视场覆盖示意</h2>
+    <div class="grid">
+      <div class="glass">
+        <div class="panel-title"><span>折叠光路草图</span><span class="pill">示意</span></div>
+        <div class="canvas">
+          <svg viewBox="0 0 600 260" width="100%" height="260" aria-label="光路剖面示意">
+            <defs>
+              <linearGradient id="beam" x1="0%" x2="100%" y1="0%" y2="0%">
+                <stop offset="0%" stop-color="rgba(91,231,196,0.9)" />
+                <stop offset="100%" stop-color="rgba(154,215,255,0.9)" />
+              </linearGradient>
+            </defs>
+            <rect x="20" y="20" width="140" height="90" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(154,215,255,0.3)" />
+            <text x="30" y="48">μOLED / LCOS</text>
+            <text x="30" y="70">1.8 μm pixel</text>
+            <text x="30" y="92">偏振输出</text>
+
+            <rect x="200" y="60" width="70" height="70" rx="10" fill="rgba(91,231,196,0.08)" stroke="rgba(91,231,196,0.5)" />
+            <text x="208" y="92">PBS</text>
+            <text x="208" y="112">45°</text>
+
+            <rect x="310" y="34" width="80" height="110" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(154,215,255,0.3)" />
+            <text x="320" y="70">自由曲面</text>
+            <text x="320" y="90">树脂</text>
+
+            <rect x="430" y="104" width="80" height="110" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(154,215,255,0.3)" />
+            <text x="440" y="140">玻璃基底</text>
+            <text x="440" y="160">AR/AG 镀膜</text>
+
+            <path d="M160 70 C220 70 240 120 280 130" stroke="url(#beam)" stroke-width="4" fill="none" />
+            <path d="M280 130 C340 140 420 150 470 160" stroke="url(#beam)" stroke-width="4" fill="none" />
+            <circle cx="535" cy="165" r="18" fill="rgba(91,231,196,0.12)" stroke="rgba(91,231,196,0.6)" />
+            <text x="523" y="170" fill="var(--text)">Eye</text>
+
+            <path d="M470 160 L560 130" stroke="rgba(154,215,255,0.5)" stroke-width="2" stroke-dasharray="6 4" />
+            <text x="472" y="120">视场 92°</text>
+          </svg>
+        </div>
+        <p class="mini">折返光路压缩 TTL，树脂+玻璃的双镜组合控制像差并兼顾耐候性。</p>
+      </div>
+      <div class="glass">
+        <div class="panel-title"><span>场景模式</span><span class="pill">双模</span></div>
+        <div class="mode-toggle" role="group" aria-label="场景模式切换">
+          <button class="mode-button active" data-mode="outdoor">室外高亮</button>
+          <button class="mode-button" data-mode="indoor">室内沉浸</button>
+          <button class="mode-button" data-mode="industry">工业巡检</button>
+        </div>
+        <ul class="list" id="modeDetail" style="margin-top:12px">
+          <li><strong>亮度 & 镀膜：</strong>1500 nits，双面 AR/AG，偏振保持率 &gt; 95%。</li>
+          <li><strong>对比度：</strong>阳光下 CR &gt; 120:1，抗鬼像光阈值 &lt; 0.6% @ 30° 入射。</li>
+          <li><strong>交互：</strong>语音 + 眼动确认，UI 固定在 10–15° 视域。</li>
+        </ul>
+        <div class="grid">
+          <div class="glass">
+            <div class="panel-title"><span>性能快照</span><span class="pill">动态</span></div>
+            <ul class="list" id="modeMetrics">
+              <li>电致变色遮光：<strong>开启</strong>，透过率 18%</li>
+              <li>可用眼盒：<strong>12 mm × 14 mm</strong></li>
+              <li>整机续航：<strong>2.8 h</strong>（分体电池）</li>
+            </ul>
+          </div>
+          <div class="glass">
+            <div class="panel-title"><span>提交提示</span><span class="pill">PPT/报告</span></div>
+            <p class="mini">一键导出 PDF，用于答辩或提交压缩包；可复制下方链接放入 PPT。</p>
+            <button class="cta" onclick="window.print()">导出 PDF</button>
+            <button class="cta link" onclick="navigator.clipboard.writeText(window.location.href).catch(()=>{})">复制页面链接</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
     <h2>人机交互与体验设计</h2>
     <div class="grid">
       <div class="glass">
@@ -458,6 +590,32 @@
   </section>
 
   <section>
+    <h2>体验故事板：从开机到沉浸</h2>
+    <div class="storyboard">
+      <div class="story-card">
+        <p class="pill">STEP 1 · 开机自检</p>
+        <p class="mini">1.5 s 内完成 IMU/PBS 偏振检测，若偏振不平衡提示重新擦拭镜片。</p>
+      </div>
+      <div class="story-card">
+        <p class="pill">STEP 2 · 环境匹配</p>
+        <p class="mini">自动根据环境光切换室外/室内模式，调节电致变色遮光与背光亮度。</p>
+      </div>
+      <div class="story-card">
+        <p class="pill">STEP 3 · 场景锚定</p>
+        <p class="mini">UWB + SLAM 锚点完成 6 DoF 定位，UI 限定在 10–15°，主内容占据 80° FOV。</p>
+      </div>
+      <div class="story-card">
+        <p class="pill">STEP 4 · 任务执行</p>
+        <p class="mini">语音/手势调用工具栏，显示实时数据与导航，确保 Pupil swim &lt; 1% 的稳定视感。</p>
+      </div>
+      <div class="story-card">
+        <p class="pill">STEP 5 · 快速收纳</p>
+        <p class="mini">折叠镜腿与可拆电池收纳，镜片覆膜耐刮，适合日常携带。</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
     <h2>创新亮点速览</h2>
     <div class="grid">
       <div class="glass">
@@ -490,6 +648,9 @@
     const ttlValue = document.getElementById("ttlValue");
     const mtfValue = document.getElementById("mtfValue");
     const estimateList = document.getElementById("estimateList");
+    const modeButtons = Array.from(document.querySelectorAll(".mode-button"));
+    const modeDetail = document.getElementById("modeDetail");
+    const modeMetrics = document.getElementById("modeMetrics");
 
     function updateEstimates() {
       const fov = Number(fovRange.value);
@@ -517,6 +678,55 @@
 
     [fovRange, ttlRange, mtfRange].forEach(ctrl => ctrl.addEventListener("input", updateEstimates));
     updateEstimates();
+
+    const modes = {
+      outdoor: {
+        detail: [
+          "亮度 & 镀膜：1500 nits，双面 AR/AG，偏振保持率 > 95%",
+          "对比度：阳光下 CR > 120:1，抗鬼像光阈值 < 0.6% @ 30° 入射",
+          "交互：语音 + 眼动确认，UI 固定在 10–15° 视域"
+        ],
+        metrics: [
+          "电致变色遮光：<strong>开启</strong>，透过率 18%",
+          "可用眼盒：<strong>12 mm × 14 mm</strong>",
+          "整机续航：<strong>2.8 h</strong>（分体电池）"
+        ]
+      },
+      indoor: {
+        detail: [
+          "亮度 & 镀膜：700 nits，低散射镀膜优化黑场，Pupil swim < 0.8%",
+          "对比度：暗室 CR > 3000:1，防眩光提升沉浸感",
+          "交互：手势 + 空间指针，UI 贴合 3D 物体"
+        ],
+        metrics: [
+          "遮光：<strong>关闭</strong>，透过率 75%",
+          "可用眼盒：<strong>13 mm × 14.5 mm</strong>",
+          "整机续航：<strong>3.5 h</strong>（分体电池）"
+        ]
+      },
+      industry: {
+        detail: [
+          "亮度 & 镀膜：1200 nits，抗油污疏水层，耐温 -10–50 ℃",
+          "对比度：CR > 200:1，优先保持边缘辨识度",
+          "交互：语音 + 物理按键冗余，提示留在 12° 以内"
+        ],
+        metrics: [
+          "遮光：<strong>半开启</strong>，透过率 35%",
+          "可用眼盒：<strong>11.5 mm × 13.5 mm</strong>",
+          "整机续航：<strong>3.0 h</strong>（后置电池）"
+        ]
+      }
+    };
+
+    function renderMode(mode) {
+      const data = modes[mode];
+      modeDetail.innerHTML = data.detail.map(item => `<li>${item}</li>`).join("");
+      modeMetrics.innerHTML = data.metrics.map(item => `<li>${item}</li>`).join("");
+      modeButtons.forEach(btn => btn.classList.toggle("active", btn.dataset.mode === mode));
+    }
+
+    modeButtons.forEach(btn => btn.addEventListener("click", () => renderMode(btn.dataset.mode)));
+    renderMode("outdoor");
   </script>
 </body>
 </html>
