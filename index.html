@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PanoramaLite AR 光学方案</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #0b1021;
+      --panel: #10162b;
+      --card: #131c33;
+      --accent: #5be7c4;
+      --accent-2: #9ad7ff;
+      --text: #e5f4ff;
+      --muted: #9bb1d0;
+      --shadow: 0 15px 45px rgba(0, 0, 0, 0.35);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at 20% 20%, rgba(91, 231, 196, 0.08), transparent 25%),
+        radial-gradient(circle at 80% 0%, rgba(154, 215, 255, 0.12), transparent 30%),
+        var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 48px 6vw 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      align-items: center;
+    }
+
+    .brand {
+      background: linear-gradient(135deg, rgba(91, 231, 196, 0.15), rgba(154, 215, 255, 0.12));
+      border: 1px solid rgba(154, 215, 255, 0.25);
+      padding: 24px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(28px, 3vw, 38px);
+      letter-spacing: 0.01em;
+    }
+
+    .tagline {
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .hero-metrics {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      border: 1px solid rgba(91, 231, 196, 0.5);
+      color: #bff8e6;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(91, 231, 196, 0.08);
+    }
+
+    .glass {
+      border: 1px solid rgba(154, 215, 255, 0.35);
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    section {
+      padding: 12px 6vw 32px;
+    }
+
+    h2 {
+      margin: 0 0 16px;
+      font-size: 22px;
+      letter-spacing: 0.01em;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .list li {
+      padding: 12px 14px;
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: rgba(91, 231, 196, 0.12);
+      border: 1px solid rgba(91, 231, 196, 0.3);
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .panel-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .flow {
+      display: grid;
+      gap: 12px;
+    }
+
+    .flow-step {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      background: var(--card);
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .step-id {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(91, 231, 196, 0.2), rgba(154, 215, 255, 0.18));
+      color: #e7fff6;
+      font-weight: 700;
+    }
+
+    .chart {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .chart .bar {
+      height: 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .chart .bar span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    th, td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text);
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .cta {
+      margin-top: 16px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #031023;
+      border-radius: 12px;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: var(--shadow);
+    }
+
+    .cta.secondary {
+      background: rgba(154, 215, 255, 0.12);
+      color: var(--text);
+      border: 1px solid rgba(154, 215, 255, 0.35);
+      box-shadow: none;
+    }
+
+    .controls {
+      display: grid;
+      gap: 12px;
+    }
+
+    .control-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .mini {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    footer {
+      padding: 24px 6vw 32px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    @media (max-width: 720px) {
+      header {
+        grid-template-columns: 1fr;
+      }
+      .chart {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <p class="pill">PanoramaLite AR • 视场≥90°</p>
+      <h1>大视场、小体积、低重量的穿戴式 AR 光学方案</h1>
+      <p class="tagline">基于折叠光路（Pancake + 偏振分束 + 树脂自由曲面）的光学模组，TTL ≤ 14 mm、模组重量 ≤ 18 g，面向全天候室外与沉浸式室内双模式。</p>
+      <div class="hero-metrics">
+        <span class="chip">视场角 92° × 82°</span>
+        <span class="chip">模组重量 18 g</span>
+        <span class="chip">MTF@20lp/mm ≥ 0.35</span>
+        <span class="chip">Pupil swim &lt; 1%</span>
+      </div>
+    </div>
+    <div class="glass">
+      <div class="panel-title"><span>问题定义</span><span class="pill">痛点</span></div>
+      <ul class="list">
+        <li>传统菲涅尔或 Birdbath 方案体积 &gt; 25 mm，重量 30–60 g，长时间佩戴压面重、热负荷高。</li>
+        <li>Pancake 主流方案视场 70–80°，增大视场会拉高镜片数量、制造成本与畸变。</li>
+        <li>户外高亮环境下对比度下降，镜片镀膜良率与量产一致性是关键障碍。</li>
+      </ul>
+    </div>
+  </header>
+
+  <section>
+    <h2>方案概览：折叠光路 + 混合材料自由曲面</h2>
+    <div class="grid">
+      <div class="glass">
+        <div class="panel-title"><span>光学架构</span><span class="pill">A-Stack</span></div>
+        <div class="flow">
+          <div class="flow-step">
+            <div class="step-id">1</div>
+            <div>
+              <strong>微型 LCOS / μOLED 发光源</strong><br />
+              0.39" 1440×1440 LCOS，1.8 μm 像素，偏振光输出；驱动板与模组分离以减轻前端重量。
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-id">2</div>
+            <div>
+              <strong>双折射分光 + 复合偏振片</strong><br />
+              45° PBS + λ/4 波片形成折返路径，缩短 TTL 至 13.6 mm，同时抑制鬼像。
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-id">3</div>
+            <div>
+              <strong>树脂/玻璃混合自由曲面镜组</strong><br />
+              前镜树脂自由曲面负责视场扩展，后镜玻璃基底增强环境耐受；单轴对称减少装调难度。
+            </div>
+          </div>
+          <div class="flow-step">
+            <div class="step-id">4</div>
+            <div>
+              <strong>热镀膜与防尘一体化架构</strong><br />
+              AR/AG 镀膜叠层 + 2 片一体框架，模具化保证装配余量 &lt; 30 μm。
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="glass">
+        <div class="panel-title"><span>核心指标</span><span class="pill">对标</span></div>
+        <div class="chart">
+          <div>
+            <p class="mini">视场 (对角)</p>
+            <div class="bar"><span style="width: 92%"></span></div>
+            <p class="mini">TTL 厚度</p>
+            <div class="bar"><span style="width: 68%"></span></div>
+            <p class="mini">模组重量</p>
+            <div class="bar"><span style="width: 45%"></span></div>
+            <p class="mini">Pupil swim</p>
+            <div class="bar"><span style="width: 12%"></span></div>
+          </div>
+          <div>
+            <table>
+              <tr><th>指标</th><th>方案</th><th>对比</th></tr>
+              <tr><td>视场角</td><td>92° × 82°</td><td>Fresnel: 95°（厚重）</td></tr>
+              <tr><td>TTL</td><td>13.6 mm</td><td>Pancake 1.0: 18–22 mm</td></tr>
+              <tr><td>重量</td><td>18 g</td><td>Birdbath: 35–60 g</td></tr>
+              <tr><td>MTF@20lp/mm</td><td>≥ 0.35</td><td>现有量产: 0.25–0.3</td></tr>
+              <tr><td>Pupil swim</td><td>&lt; 1%</td><td>常见 &gt; 3%</td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>参数沙盘：估算视场 / 重量 / 成本</h2>
+    <div class="grid">
+      <div class="glass">
+        <div class="panel-title"><span>参数调节</span><span class="pill">互动</span></div>
+        <div class="controls">
+          <div class="control-row">
+            <label for="fovRange">目标视场 (°)</label>
+            <strong id="fovValue">92°</strong>
+          </div>
+          <input id="fovRange" type="range" min="80" max="100" value="92" />
+
+          <div class="control-row">
+            <label for="ttlRange">TTL 厚度 (mm)</label>
+            <strong id="ttlValue">13.6 mm</strong>
+          </div>
+          <input id="ttlRange" type="range" min="10" max="20" step="0.1" value="13.6" />
+
+          <div class="control-row">
+            <label for="mtfRange">MTF @20lp/mm</label>
+            <strong id="mtfValue">0.35</strong>
+          </div>
+          <input id="mtfRange" type="range" min="0.25" max="0.45" step="0.01" value="0.35" />
+        </div>
+      </div>
+      <div class="glass">
+        <div class="panel-title"><span>结果估算</span><span class="pill">实时</span></div>
+        <ul class="list" id="estimateList">
+          <li>模组重量估算：<strong>18.0 g</strong></li>
+          <li>光学件 BOM 成本（单价）：<strong>12.4 USD</strong></li>
+          <li>量产良率预估：<strong>94%</strong></li>
+          <li>Pupil swim：<strong>&lt; 1%</strong></li>
+          <li>可用眼盒：<strong>12 mm × 14 mm</strong></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>人机交互与体验设计</h2>
+    <div class="grid">
+      <div class="glass">
+        <div class="panel-title"><span>交互逻辑</span><span class="pill">UX</span></div>
+        <ol class="list">
+          <li><strong>近眼通知层：</strong>关键告警和导航固定在 10°–15° 视角范围；降低眼动距离。</li>
+          <li><strong>场景映射层：</strong>空间锚定 UI 贴合真实物体，使用手势光标（骨骼手势 + 眼动确认）。</li>
+          <li><strong>沉浸渲染层：</strong>80–90° 范围内播放 3D 内容，Pancake 折返镜组减少边缘暗角。</li>
+        </ol>
+      </div>
+      <div class="glass">
+        <div class="panel-title"><span>配套硬件设计</span><span class="pill">整机</span></div>
+        <ul class="list">
+          <li>电池后置 + 镜腿散热鳍片，前后配重 48:52，减轻鼻托压力。</li>
+          <li>镜腿内置 IMU 与 UWB 模块，支持空间定位与室内导航。</li>
+          <li>磁吸式遮光罩，在室外强光与室内透明模式间快速切换。</li>
+        </ul>
+      </div>
+      <div class="glass">
+        <div class="panel-title"><span>可制造性与成本</span><span class="pill">DfM</span></div>
+        <ul class="list">
+          <li>树脂自由曲面使用注塑 + 精抛镀膜，单片成本 ≈ $3.5；玻璃件单片 ≈ $4.8。</li>
+          <li>PBS 与 λ/4 薄膜一次热压复合，减少贴合工序，提升良率至 94%。</li>
+          <li>整机光学 BOM（不含显示与电子）目标 $12–13，满足消费级量产。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>风险与验证路线</h2>
+    <div class="grid">
+      <div class="glass">
+        <div class="panel-title"><span>关键风险</span><span class="pill">Risk</span></div>
+        <ul class="list">
+          <li>高视场自由曲面加工误差导致边缘 MTF 下降。</li>
+          <li>偏振分光的角度敏感性带来色偏与亮度不均。</li>
+          <li>镀膜一致性影响鬼像与对比度。</li>
+        </ul>
+      </div>
+      <div class="glass">
+        <div class="panel-title"><span>验证计划</span><span class="pill">Pilot</span></div>
+        <ol class="list">
+          <li>光学仿真：Zemax/LightTools 建模，针对视场 92° 优化像差与偏振。</li>
+          <li>样件验证：3D 打印 + CNC 树脂镜样，实测 MTF/畸变/亮度均匀性。</li>
+          <li>环境测试：-10–45 ℃ 热冲击与湿热，评估镀膜稳定性与光轴偏移。</li>
+          <li>人因评估：20+ 受试者进行佩戴舒适度与眩晕度调查，目标 SSQ &lt; 10。</li>
+        </ol>
+      </div>
+      <div class="glass">
+        <div class="panel-title"><span>时间节点</span><span class="pill">Roadmap</span></div>
+        <ul class="list">
+          <li>W1–W3：光学仿真与结构打样。</li>
+          <li>W4–W6：小批量样件 + 量产可行性评估。</li>
+          <li>W7–W10：整机 Demo、用户测试与优化。</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>创新亮点速览</h2>
+    <div class="grid">
+      <div class="glass">
+        <div class="panel-title"><span>亮点</span><span class="pill">Why</span></div>
+        <ul class="list">
+          <li>双折返 Pancake 配合自由曲面，使 TTL 压缩到 13.6 mm，重量控制在 18 g。</li>
+          <li>混合材料镜组兼顾大视场与可制造性，单轴对称降低装调难度。</li>
+          <li>偏振优化与镀膜整合减轻鬼像、保证户外对比度。</li>
+          <li>电池后置与分体驱动，显著改善佩戴舒适度与热分布。</li>
+        </ul>
+      </div>
+      <div class="glass">
+        <div class="panel-title"><span>快速演示文件</span><span class="pill">下载</span></div>
+        <p>将本页面导出为 PDF，或在 PPT/说明书中复用以下核心参数：视场 92° × 82°、TTL 13.6 mm、重量 18 g、MTF@20lp/mm ≥ 0.35、Pupil swim &lt; 1%。</p>
+        <button class="cta" onclick="window.print()">导出 PDF</button>
+        <button class="cta secondary" onclick="alert('请在实际提交中附上 Zemax/LightTools 光学模型与样机装配图。')">提交提醒</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    PanoramaLite AR • 针对 85° 以上大视场、小体积、低重量近眼显示的参考原型。可直接在浏览器中演示，亦可嵌入团队说明书与 PPT。
+  </footer>
+
+  <script>
+    const fovRange = document.getElementById("fovRange");
+    const ttlRange = document.getElementById("ttlRange");
+    const mtfRange = document.getElementById("mtfRange");
+    const fovValue = document.getElementById("fovValue");
+    const ttlValue = document.getElementById("ttlValue");
+    const mtfValue = document.getElementById("mtfValue");
+    const estimateList = document.getElementById("estimateList");
+
+    function updateEstimates() {
+      const fov = Number(fovRange.value);
+      const ttl = Number(ttlRange.value);
+      const mtf = Number(mtfRange.value);
+
+      // 简化估算模型：更大视场或更高 MTF 会提升重量与成本
+      const weight = Math.max(14, 16 + (fov - 90) * 0.2 + (mtf - 0.3) * 12 + (ttl - 13) * 0.6);
+      const bom = Math.max(10, 11 + (mtf - 0.3) * 18 + (fov - 90) * 0.08 + (13 - ttl) * 0.5);
+      const yieldRate = Math.min(97, 95 - Math.max(0, (fov - 92) * 0.5) - Math.max(0, (0.36 - mtf) * 30));
+
+      const items = [
+        `模组重量估算：<strong>${weight.toFixed(1)} g</strong>` ,
+        `光学件 BOM 成本（单价）：<strong>${bom.toFixed(1)} USD</strong>`,
+        `量产良率预估：<strong>${yieldRate.toFixed(1)}%</strong>`,
+        `Pupil swim：<strong>${(Math.max(0.6, 1.2 - (92 - fov) * 0.05)).toFixed(2)}%</strong>`,
+        `可用眼盒：<strong>${(12 + (92 - fov) * 0.05).toFixed(1)} mm × ${(14 + (92 - fov) * 0.04).toFixed(1)} mm</strong>`
+      ];
+
+      estimateList.innerHTML = items.map(i => `<li>${i}</li>`).join("");
+      fovValue.textContent = `${fov}°`;
+      ttlValue.textContent = `${ttl.toFixed(1)} mm`;
+      mtfValue.textContent = mtf.toFixed(2);
+    }
+
+    [fovRange, ttlRange, mtfRange].forEach(ctrl => ctrl.addEventListener("input", updateEstimates));
+    updateEstimates();
+  </script>
+</body>
+</html>
